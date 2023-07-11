@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jQuery Multiple Image Upload Example</title>
+    <meta name="description" content="DESCRIPTIONHERE" />
+    <meta name="author" content="Frontendscript" />
+
+    <!--Only for demo purpose - no need to add.-->
+    <link rel="stylesheet" type="text/css" href="./css/bootstrap.min.css" />
+    <link rel="stylesheet" href="./css/image-uploader.min.css">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <form method="POST" name="form-example-1" id="form-example-1" enctype="multipart/form-data">
+            <div class="form-row mb-3">
+                <div class="col-md-12">
+                    <label for="images">Hình ảnh</label>
+                    <div class="input-images"></div>
+                </div>
+            </div>
+
+        </form>
+
+    </div>
+
+    <script type="text/javascript" src="./js/jquery.min.js"></script>
+    <script type="text/javascript" src="./js/image-uploader.min.js"></script>
+
+    <script>
+        $(function () {
+            let preloaded = [
+                { id: 1, src: 'https://picsum.photos/500/500?random=1' },
+                { id: 2, src: 'https://picsum.photos/500/500?random=2' },
+                { id: 3, src: 'https://picsum.photos/500/500?random=3' },
+
+            ];
+
+            $('.input-images').imageUploader({
+                preloaded: preloaded,
+                imagesInputName: 'images',
+                preloadedInputName: 'old',
+                label: '',
+                maxFiles: 5,
+                extensions: ['.jpg', '.jpeg', '.png', '.gif'],
+                mimes: ['image/jpeg', 'image/png', 'image/gif']
+            });
+
+            $('input[name="images[]"]').change(function() {
+                initIconUpload();
+            });
+            
+            function initIconUpload() {
+                let imageCount = $('.uploaded-image').length;
+
+                $('.uploaded .append-upload').remove();
+                if (imageCount < 5 && imageCount > 0) {
+                    $('.uploaded').append('<div class="append-upload"><i class="iui-cloud-upload"></i></div>');
+                }
+
+                $('.uploaded-image button.delete-image').bind('click', initIconUpload);
+            }
+
+            initIconUpload();
+
+
+		//tham khảo: https://frontendscript.com/demo/jquery-multiple-image-upload-with-preview-and-delete/
+
+        });
+    </script>
+
+
+
+
+</body>
+
+</html>
