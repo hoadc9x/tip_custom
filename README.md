@@ -299,6 +299,7 @@ sudo systemctl restart nginx
   
   _Tạo systemd timer để chạy định kỳ_
     Tạo file timer `/etc/systemd/system/certbot-renew.timer`:
+  
     `sudo nano /etc/systemd/system/certbot-renew.timer`
   
     Thêm nội dung sau:
