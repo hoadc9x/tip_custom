@@ -52,17 +52,32 @@ Kiểm tra PHP-FPM đã chạy chưa:
 
 `sudo mysql -u root -p`
 
-Tạo database và user cho Laravel:
+Tạo database:
 
 `CREATE DATABASE laravel_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;`
 
-`CREATE USER 'laravel_user'@'localhost' IDENTIFIED BY 'your_secure_password';`
+Tạo user truy cập trên serve:
+```sh
+CREATE USER 'laravel_user'@'localhost' IDENTIFIED BY 'your_secure_password';
+GRANT ALL PRIVILEGES ON *.* TO 'laravel_user'@'localhost';
+FLUSH PRIVILEGES;
+EXIT;
 
-`GRANT ALL PRIVILEGES ON laravel_db.* TO 'laravel_user'@'localhost';`
+#nếu muốn chỉ định chỉ cho phép truy db laravel_db vừa tạo thì đổi  *.* => laravel_db.* 
+```
+Tạo user để có thể truy cập db từ xa:
+```sh
+CREATE USER 'laravel_user'@'%' IDENTIFIED BY 'your_secure_password';
+GRANT ALL PRIVILEGES ON *.* TO 'laravel_user'@'%';
+FLUSH PRIVILEGES;
+EXIT;
 
-`FLUSH PRIVILEGES;`
+#nếu muốn chỉ định chỉ cho phép truy db laravel_db vừa tạo thì đổi  *.* => laravel_db.*
+#Lưu ý phải sửa file cấu hình MYSQL: `sudo nano /etc/mysql/mysql.conf.d/mysqld.cnf`
+#sửa `bind-address = 127.0.0.1` thành `bind-address = 0.0.0.0`
+#check: `sudo netstat -tulnp | grep mysql` được `0 0.0.0.0:3306   0.0.0.0:*   LISTEN` là OK
+```
 
-`EXIT;`
 
 * * * * *
 
@@ -188,11 +203,11 @@ Nếu không có lỗi, khởi động lại Nginx:
 `sudo chmod -R 775 /var/www/html/laravel_project/storage /var/www/html/laravel_project/bootstrap/cache`
 
 ### **5.3. Restart services**
-
-`sudo systemctl restart nginx`
-`sudo systemctl restart php7.4-fpm`
-`sudo systemctl restart mysql`
-
+```sh
+sudo systemctl restart nginx
+sudo systemctl restart php7.4-fpm
+sudo systemctl restart mysql
+```
 ### **5.4. Kiểm tra website**
 
 Truy cập `http://yourdomain.com` hoặc `http://your_vps_ip` để kiểm tra.
