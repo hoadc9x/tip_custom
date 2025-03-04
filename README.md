@@ -265,7 +265,8 @@ Lưu lại và khởi động lại Nginx:
 sudo nginx -t
 sudo systemctl restart nginx
 ```
-
+#### Certbot đã tự động tạo một cronjob bằng systemd_timer nên không cần làm
+- Check: `sudo systemctl list-timers`
 #### Cài tự động gia hạn SSL: (do Let's Encrypt chỉ có hạn 3 tháng)
 - ##### Cách 1: Dùng crontab:
   `sudo crontab -e`
